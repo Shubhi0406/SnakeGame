@@ -4,6 +4,7 @@ from food import Food
 from score import Scoreboard
 import time
 
+# screen set up
 screen = Screen()
 screen.setup(width=600, height=600)
 screen.bgcolor("black")
@@ -16,6 +17,7 @@ snake = Snake()
 food = Food()
 scoreboard = Scoreboard()
 
+# Enable arrow keys
 screen.listen()
 screen.onkey(key="Up", fun=snake.up)
 screen.onkey(key="Down", fun=snake.down)
@@ -28,17 +30,20 @@ while game_is_on:
 
     snake.move()
 
+    # check if snake hits food
     if snake.squares[0].distance(food) < 15:
         food.refresh()
         scoreboard.inc_score()
         snake.extend()
 
+    # check if snake hits edges
     for square in snake.squares:
         if square.xcor() >= 300 or square.xcor() <= -300 or square.ycor() >= 300 or square.ycor() <= -300:
             scoreboard.reset()
             snake.reset()
             time.sleep(0.2)
 
+    # check if snake hits itself
     for square in snake.squares[1:]:
         if snake.squares[0].distance(square) < 10:
             scoreboard.reset()
